@@ -38,7 +38,10 @@ And can be registered on the client as a component with Ractive.js as follows:
 ```javascript
 Ractive.components.TestComponent = Ractive.extend({
 	template: '#ractive-test-component',
-	data: {},
+	data: {
+		title: 'This Is The Title',
+		content: '<p>Sample content <em>here</em>.</p>'
+	},
 	// etc.
 });
 ```
