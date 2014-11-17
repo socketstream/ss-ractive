@@ -34,7 +34,7 @@ exports.init = function(root, config) {
 
 		// Compile template into a function and attach to window.<windowVar>
 		process: function(template, path, id) {
-			return '<script id="' + id + '" type="text/ractive">' + jade.render(template, {
+			return '<script id="ractive-' + id + '" type="text/ractive">' + jade.render(template, {
 				compileDebug: debug,
 				filename: path,
 				self: self,

@@ -23,25 +23,24 @@ ss.client.templateEngine.use(require('ss-ractive'));
 Ss-ractive (for now) relies on precompiled Jade templates, wrapped in `<script type="text/ractive">` tags. For example, a file located at `/client/templates/test/component.jade` with the following content:
 
 ```jade
-h1 Title
-p Content
+h1 {{title}}
+| {{{content}}}
 ```
 
-Will compile to:
+Will compile to HTML script tags:
 
 ```html
-<script id="test-component" type="text/ractive">
-	<h1>Title</h1>
-	<p>Content</p>
-</script>
+<script id="ractive-test-component" type="text/ractive"><h1>{{title}}</h1>{{{content}}}</script>
 ```
 
 And can be registered on the client as a component with Ractive.js as follows:
 
 ```javascript
 Ractive.components.TestComponent = Ractive.extend({
-	template: '#test-component',
+	template: '#ractive-test-component',
 	data: {},
 	// etc.
 });
 ```
+
+Notice the prefix `ractive-` to avoid namespace collision. Note also the preservation of handlebars syntax in the compiled templates, since Ractive.js relies heavily on Handlebars-like syntax [see the Ractive.js documentation](http://docs.ractivejs.org/latest/get-started).
