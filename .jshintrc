@@ -1,0 +1,11 @@
+{
+	"node": true,
+	"camelcase": true,
+	"curly": true,
+	"indent": 4,
+	"strict": false,
+	"browser": false,
+	"smarttabs": false,
+	"globals": {
+	}
+}
