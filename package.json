@@ -2,7 +2,7 @@
   "name": "ss-ractive",
   "author": "Robert Hall <langbert@gmail.com>",
   "description": "Ractive template engine wrapper providing server-side compiled templates for SocketStream apps",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./engine.js",
   "repository": {
     "type": "git",
@@ -12,7 +12,8 @@
     "node": ">= 0.10.0"
   },
   "dependencies": {
-    "jade": ">= 1.7.0"
+    "jade": ">= 1.7.0",
+    "ractive": "^0.6.1"
   },
   "devDependencies": {}
 }

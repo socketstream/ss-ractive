@@ -2,18 +2,28 @@
 
 var jade = require('jade');
 var path = require('path');
+var fs = require('fs');
 
-exports.init = function(root, config) {
+exports.init = function(ss, config) {
 
-	// Set global/window variable used to access templates from the browser
-	var namespace = config && config.namespace || 'Ractive';
-	var self = config && config.self || false;
-	var debug = config && config.debug ? config.debug : false;
-	var globals = config && config.globals || [];
+	var self, debug, globals, pretty, ractivePath, clientCode, newline;
+
+	// set config variables
+	config = config || {};
+	self = config.self || false;
+	debug = config.debug ? config.debug : false;
+	globals = config.globals || [];
+	pretty = config.pretty || false;
+	newline = pretty ? '\n' : '';
+
+	// load ractive.js
+	ractivePath = path.join(path.dirname(require.resolve('ractive')), config.ractiveFilename || 'ractive.min.js');
+	clientCode = fs.readFileSync(ractivePath, 'utf8');
+	whahappen = ss.client.send('lib', 'ractive', clientCode);
 
 	return {
 
-		name: namespace,
+		name: config.namespace || 'Ractive',
 
 		selectFormatter: function(templatePath, formatters, defaultFormatter) {
 			if (path.extname(templatePath).toLowerCase() === '.jade') {
@@ -34,12 +44,13 @@ exports.init = function(root, config) {
 
 		// Compile template into a function and attach to window.<windowVar>
 		process: function(template, path, id) {
-			return '<script id="ractive-' + id + '" type="text/ractive">' + jade.render(template, {
+			return newline + newline + '<script id="ractive-' + id + '" type="text/ractive">' + jade.render(template, {
 				compileDebug: debug,
 				filename: path,
 				self: self,
-				globals: globals
-			}) + '</script>';
+				globals: globals,
+				pretty: pretty
+			}) + newline + '</script>';
 		}
 
 	};
