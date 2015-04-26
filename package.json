@@ -6,7 +6,7 @@
   "main": "./engine.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arxpoetica/ss-ractive.git"
+    "url": "https://github.com/socketstream/ss-ractive.git"
   },
   "engines": {
     "node": ">= 0.10.0"
