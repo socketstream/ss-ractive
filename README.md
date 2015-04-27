@@ -1,4 +1,4 @@
-# Ractive Template Engine wrapper for SocketStream 0.3
+# Ractive Template Engine wrapper for SocketStream
 
 http://www.ractivejs.org/
 
