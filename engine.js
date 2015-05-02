@@ -6,7 +6,7 @@ var fs = require('fs');
 
 exports.init = function(ss, config) {
 
-	var self, debug, globals, pretty, ractivePath, clientCode, newline;
+	var self, debug, globals, pretty, ractivePath, ractiveMapPath, clientCode, clientMapCode, newline, filename;
 
 	// set config variables
 	config = config || {};
@@ -17,9 +17,19 @@ exports.init = function(ss, config) {
 	newline = pretty ? '\n' : '';
 
 	// load ractive.js
-	ractivePath = path.join(path.dirname(require.resolve('ractive')), config.ractiveFilename || 'ractive.min.js');
+	filename = config.ractiveFilename || 'ractive.min.js';
+	ractivePath = path.join(path.dirname(require.resolve('ractive')), filename);
 	clientCode = fs.readFileSync(ractivePath, 'utf8');
+	// TODO: there's a bug here, so doing this for now.
+	// SEE: https://github.com/socketstream/socketstream/issues/381
+	// AND: https://github.com/socketstream/socketstream/issues/353
+	clientCode = clientCode.replace('//# sourceMappingURL=' + filename + '.map', '');
 	ss.client.send('lib', 'ractive', clientCode);
+
+	// load ractive.js.map
+	// ractiveMapPath = path.join(path.dirname(require.resolve('ractive')), filename + '.map');
+	// clientMapCode = fs.readFileSync(ractiveMapPath, 'utf8');
+	// ss.client.send('lib', 'ractive-map', clientMapCode);
 
 	return {
 
