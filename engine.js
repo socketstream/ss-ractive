@@ -1,25 +1,18 @@
 // Ractive.js Client Template Engine wrapper for SocketStream 0.3
 
-var jade = require('jade');
 var path = require('path');
 var fs = require('fs');
 
 exports.init = function(ss, config) {
 
-	var self, debug, globals, pretty, ractivePath, ractiveMapPath, clientCode, clientMapCode, newline, filename;
-
 	// set config variables
 	config = config || {};
-	self = config.self || false;
-	debug = config.debug ? config.debug : false;
-	globals = config.globals || [];
-	pretty = config.pretty || false;
-	newline = pretty ? '\n' : '';
+	var nl = config.pretty ? '\n' : '';
 
 	// load ractive.js
-	filename = config.ractiveFilename || 'ractive.min.js';
-	ractivePath = path.join(path.dirname(require.resolve('ractive')), filename);
-	clientCode = fs.readFileSync(ractivePath, 'utf8');
+	var filename = config.ractiveFilename || 'ractive.min.js';
+	var ractivePath = path.join(path.dirname(require.resolve('ractive')), filename);
+	var clientCode = fs.readFileSync(ractivePath, 'utf8');
 	// TODO: there's a bug here, so doing this for now.
 	// SEE: https://github.com/socketstream/socketstream/issues/381
 	// AND: https://github.com/socketstream/socketstream/issues/353
@@ -44,7 +37,7 @@ exports.init = function(ss, config) {
 
 		// Opening code to use when a template is called for the first time
 		prefix: function() {
-			return newline + newline;
+			return nl + nl;
 		},
 
 		// Closing code once all templates have been written into the <script> tag
@@ -53,17 +46,8 @@ exports.init = function(ss, config) {
 		},
 
 		// Compile template into a function and attach to window.<windowVar>
-		process: function(template, path, id, thr) {
-			var html = newline + '<script id="' + id.replace(/^templates-/, '') + '" type="text/ractive">' + newline;
-			html += jade.render(template, {
-				compileDebug: debug,
-				filename: path,
-				self: self,
-				globals: globals,
-				pretty: pretty // NOTE: this will not work if Jade is already in use and has `pretty: false`
-			});
-			html += newline + '</script>' + newline + newline;
-			return html;
+		process: function(template, path, id) {
+			return nl + '<script id="' + id.replace(/^templates-/, '') + '" type="text/ractive">' + nl + template + nl + '</script>' + nl + nl;
 		}
 
 	};
